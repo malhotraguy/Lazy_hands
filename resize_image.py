@@ -26,8 +26,8 @@ def get_resize(
     resized_image_matrix = cv2.resize(
         src=img,
         dsize=(
-            int(width * (1 + width_change_factor)),
-            int(height * (1 + height_change_factor)),
+            int(width * (1 + 2*width_change_factor)),
+            int(height * (1 + 2*height_change_factor)),
         ),
         interpolation=cv2.INTER_AREA,
     )
