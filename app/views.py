@@ -36,7 +36,7 @@ def sent_image(filename):
 
 @app.route("/show_image/<filename>", methods=["GET"])
 def show_image(filename):
-    return render_template('index.html', user_image=f"{RESULT_IMAGE_FOLDER}/{filename}")
+    return render_template('index.html', user_image=f"/result_images/{filename}")
 
 
 @app.route("/message", methods=["GET", "POST"])
