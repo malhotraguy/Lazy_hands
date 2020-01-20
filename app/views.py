@@ -15,7 +15,7 @@ from app import app
 
 CORS(app)
 FILE_NAME = "info_images/volleyball.jpg"
-NGROK_URL = "http://08429529.ngrok.io"
+NGROK_URL = "https://lazy-hands-api-heroku.herokuapp.com"
 
 
 def resolve_url(url_link):
