@@ -153,7 +153,7 @@ def get_wrnch_data(local_image_path=None, image_byte_stream=None):
     # print(f"right_wrist_displacement={right_wrist_displacement}")
 
     rotation_angle_radians = math.atan2(
-        (right_wrist[1] - left_wrist[1]), (right_wrist[0] - left_wrist[0])
+        (left_wrist[1] - right_wrist[1]), (left_wrist[0] - right_wrist[0])
     )
     # print(f"rotation_angle_radians={rotation_angle_radians}")
 
