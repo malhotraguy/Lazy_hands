@@ -11,7 +11,7 @@ IBM_API_KEY = os.environ.get("IBM_API_KEY")
 
 
 def get_image_classification(
-    image_url=None, image_binary_file=None, image_filename=None, threshold=THRESHOLD
+        image_url=None, image_binary_file=None, image_filename=None, threshold=THRESHOLD
 ):
     authenticator = IAMAuthenticator(IBM_API_KEY)
     visual_recognition = VisualRecognitionV3(
@@ -29,11 +29,13 @@ def get_image_classification(
     classes_list = (
         classes_result.get("images", [{}])[0].get("classifiers", [{}])[0].get("classes")
     )
+
     if not classes_list:
         return []
+    classes_list = list(map(lambda x: f"{x.get('class')}:{x.get('score')}", classes_list))
     return classes_list
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     image_url = "https://ibm.biz/BdzLPG"
     print(get_image_classification(image_url=image_url))
