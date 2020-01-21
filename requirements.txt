@@ -12,3 +12,4 @@ Pillow==7.0.0
 python-dotenv==0.10.5
 scikit-image==0.16.2
 twilio==6.35.2
+ibm-watson==4.2.1

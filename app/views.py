@@ -4,10 +4,11 @@ from flask import Flask, request, send_file, render_template
 from flask_cors import CORS
 from twilio.twiml.messaging_response import Message, MessagingResponse
 
-from constants import PARENT_DIRECTORY, RESULT_IMAGE_FOLDER
+from constants import PARENT_DIRECTORY, RESULT_IMAGE_FOLDER, HOST_URL
 
 # https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-python
 from helper import get_bytes_image_from_url
+from image_classifier import get_image_classification
 from job_submit import get_wrnch_data
 from resize_image import get_resize
 from rotate_image import get_rotation
@@ -15,7 +16,6 @@ from app import app
 
 CORS(app)
 FILE_NAME = "info_images/volleyball.jpg"
-NGROK_URL = "https://lazy-hands-api-heroku.herokuapp.com"
 
 
 def resolve_url(url_link):
@@ -36,7 +36,7 @@ def sent_image(filename):
 
 @app.route("/show_image/<filename>", methods=["GET"])
 def show_image(filename):
-    return render_template('index.html', user_image=f"/result_images/{filename}")
+    return render_template("index.html", user_image=f"/result_images/{filename}")
 
 
 @app.route("/message", methods=["GET", "POST"])
@@ -58,10 +58,12 @@ def message():
         if received_body_msg.startswith("Image_"):
             store_file_name = f'{received_body_msg.replace("Image_", "")}.jpg'
             r = requests.get(resolved_url, stream=True)
+            image_classes = get_image_classification(image_url=resolved_url)
             with open(f"{PARENT_DIRECTORY}/info_images/{store_file_name}", "wb") as f:
                 f.write(r.content)
-
-            response_text = f"File has been uploaded with name: {store_file_name}"
+            response_text = (
+                f"Uploaded File: {store_file_name} has classes={image_classes}"
+            )
             message_twilio.body(response_text)
             response.append(message_twilio)
             return str(response)
@@ -102,7 +104,7 @@ def message():
         else:
             response_text = "Image is shrinked "
         response_text = f"{response_text}with angle={rotation_degrees}"
-        message_twilio.media(f"{NGROK_URL}/result_images/{file_name}")
+        message_twilio.media(f"{HOST_URL}/result_images/{file_name}")
 
     else:
         response_text = "No image is received!!"

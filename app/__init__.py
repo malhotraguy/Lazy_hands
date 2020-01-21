@@ -1,6 +1,6 @@
 from flask import Flask
 
-app = Flask(__name__, template_folder="templates",static_url_path='/result_images')
+app = Flask(__name__, template_folder="templates", static_url_path="/result_images")
 
 if app.config["ENV"] == "production":
 
